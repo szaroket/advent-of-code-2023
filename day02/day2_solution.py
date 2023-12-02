@@ -4,7 +4,7 @@
 import re
 from collections import defaultdict
 
-CUBES_IN_BAG = {
+CUBES_MAX_VALUES = {
     "red": 12,
     "green": 13,
     "blue": 14,
@@ -17,58 +17,31 @@ def read_input() -> list[str]:
     return data
 
 
-def solution_1() -> None:
+if __name__ == "__main__":
     input_data = read_input()
-    cubes_sum = 0
+    result_part_1 = 0
+    result_part_2 = 0
     for line in input_data:
-        splitted_line = line.replace(" ", "").split(":")
-        game_number = int(re.findall(r"\d+", splitted_line[0])[0])
-        cubes_sets = splitted_line[1].replace(";", "").replace(",", "")
-        iter_cubes = iter(list(filter(None, re.split(r'(\d+)', cubes_sets))))
-        list_of_cubes = list(zip(iter_cubes, iter_cubes))
-        number_of_cubes = len(list_of_cubes)
-        correct_result = 0
-        for cubes in list_of_cubes:
-            if int(cubes[0]) <= CUBES_IN_BAG[cubes[1]]:
-                correct_result += 1
-
-        if correct_result == number_of_cubes:
-            cubes_sum += int(game_number)
-
-    print(f"Part 2: final result it {cubes_sum}")
-
-
-def solution_2() -> None:
-    input_data = read_input()
-    result = 0
-    for line in input_data:
-        splitted_line = line.replace(" ", "").split(":")
-        cubes_sets = splitted_line[1].replace(";", "").replace(",", "")
-        iter_cubes = iter(list(filter(None, re.split(r'(\d+)', cubes_sets))))
+        game_info, cubes_info = line.replace(" ", "").split(":")
+        game_number = int(re.findall(r"\d+", game_info)[0])
+        iter_cubes = iter(list(filter(None, re.split(r'(\d+)', cubes_info.replace(";", "").replace(",", "")))))
         list_of_cubes = list(zip(iter_cubes, iter_cubes))
         cubes_dict = defaultdict(list)
-        for number, color in list_of_cubes:
-            cubes_dict[color].append(int(number))
 
-        green_cubes = 0
-        red_cubes = 0
-        blue_cubes = 0
-        cubes_sum = 0
+        for number, colour in list_of_cubes:
+            cubes_dict[colour].append(int(number))
 
-        for red_number in cubes_dict["red"]:
-            for blue_number in cubes_dict["blue"]:
-                for green_number in cubes_dict["green"]:
-                    if red_number + blue_number + green_number > cubes_sum:
-                        cubes_sum = red_number + blue_number + green_number
-                        green_cubes = green_number
-                        red_cubes = red_number
-                        blue_cubes = blue_number
+        valid_set = True
+        dice_multiplier = 1
+        for colour in CUBES_MAX_VALUES.keys():
+            dice_multiplier *= max(cubes_dict[colour])
+            if max(cubes_dict[colour]) > CUBES_MAX_VALUES[colour]:
+                valid_set = False
 
-        multiple = red_cubes * green_cubes * blue_cubes
-        result += multiple
-    print(f"Part 2: final result it {result}")
+        if valid_set:
+            result_part_1 += game_number
 
+        result_part_2 += dice_multiplier
 
-if __name__ == "__main__":
-    solution_1()
-    solution_2()
+    print(f"Part 1: final result is {result_part_1}.")
+    print(f"Part 2: final result is {result_part_2}.")
