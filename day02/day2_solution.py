@@ -24,7 +24,14 @@ if __name__ == "__main__":
     for line in input_data:
         game_info, cubes_info = line.replace(" ", "").split(":")
         game_number = int(re.findall(r"\d+", game_info)[0])
-        iter_cubes = iter(list(filter(None, re.split(r'(\d+)', cubes_info.replace(";", "").replace(",", "")))))
+        iter_cubes = iter(
+            list(
+                filter(
+                    None,
+                    re.split(r"(\d+)", cubes_info.replace(";", "").replace(",", "")),
+                )
+            )
+        )
         list_of_cubes = list(zip(iter_cubes, iter_cubes))
         cubes_dict = defaultdict(list)
 
