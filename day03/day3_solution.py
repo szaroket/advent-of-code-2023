@@ -2,6 +2,7 @@
 # Day 3: Gear Ratios
 # https://adventofcode.com/2023/day/3
 import itertools
+import math
 import re
 
 NUMBERS = "01234566789."
@@ -43,4 +44,8 @@ if __name__ == "__main__":
                     symbols[edge].append(int(number.group()))
 
     result_part_1 = sum(sum(numbers) for numbers in symbols.values())
-    print(result_part_1)
+    print(f"Part 1: result is {result_part_1}.")
+    result_part_2 = sum(
+        math.prod(numbers) for numbers in symbols.values() if len(numbers) == 2
+    )
+    print(f"Part 2: result is {result_part_2}.")
