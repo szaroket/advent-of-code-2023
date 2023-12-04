@@ -4,7 +4,6 @@
 
 import re
 
-
 WORD_TO_NUMBER = {
     "one": "o1e",
     "two": "t2o",
