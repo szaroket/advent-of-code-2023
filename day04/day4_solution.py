@@ -27,16 +27,12 @@ if __name__ == "__main__":
         how_many_winning_numbers = len(
             [number for number in counter_numbers.values() if number == 2]
         )
-        points = 0
-        if how_many_winning_numbers != 0:
-            points = pow(2, how_many_winning_numbers - 1)
-            number_of_operations = cards[card_number]
-            for operation in range(number_of_operations):
-                for idx in range(
-                    card_number + 1, card_number + 1 + how_many_winning_numbers
-                ):
-                    cards[idx] += 1
-        result += points
+
+        if how_many_winning_numbers > 0:
+            result += pow(2, how_many_winning_numbers - 1)
+
+        for operations in range(how_many_winning_numbers):
+            cards[card_number + 1 + operations] += cards[card_number]
 
     print(f"Part 1: result it {result}.")
 
